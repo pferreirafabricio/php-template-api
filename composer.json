@@ -13,7 +13,8 @@
     ],
     "require-dev": {
         "ergebnis/composer-normalize": "^2.13",
-        "vimeo/psalm": "^4.7"
+        "vimeo/psalm": "^4.7",
+        "phpunit/phpunit": "^9"
     },
     "config": {
         "vendor-dir": "vendor"
@@ -28,8 +29,9 @@
             "source/Boot/Helpers.php"
         ]
     },
+    "minimum-stability": "stable",
     "scripts": {
-        "psalm": "./vendor/bin/psalm"
-    },
-    "minimum-stability": "stable"
+        "psalm": "./vendor/bin/psalm",
+        "post-install-cmd": "composer normalize"
+    }
 }
