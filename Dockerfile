@@ -1,4 +1,9 @@
-FROM php:8.0-cli
-COPY . /usr/src/php-api
-WORKDIR /usr/src/php-api
-CMD [ "php", "-S", "localhost:8000", "index.php" ]
+FROM php:8.0.3-apache
+
+RUN a2enmod rewrite
+
+RUN docker-php-ext-install pdo pdo_mysql
+
+RUN pecl install xdebug && docker-php-ext-enable xdebug
+
+ADD . /var/www/html

@@ -9,7 +9,7 @@ define('CONF_BASE_URL', 'http://localhost:7050');
  * DATABASE
  */
 define('CONF_DB_HOST', 'localhost');
-define('CONF_DB_NAME', 'dbname');
+define('CONF_DB_NAME', 'test_db');
 define('CONF_DB_USER', 'root');
 define('CONF_DB_PASSWORD', 'root');
 
