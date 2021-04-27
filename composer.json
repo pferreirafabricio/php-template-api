@@ -1,5 +1,5 @@
 {
-    "name": "pferreirafabricio/php-templateApi",
+    "name": "pferreirafabricio/phptemplateapi",
     "description": "A simple PHP API structure for use in small project",
     "type": "project",
     "license": "MIT",
@@ -25,5 +25,7 @@
             "Source/Boot/Helpers.php"
         ]
     },
-    "require": {}
+    "require-dev": {
+        "vimeo/psalm": "^4.7"
+    }
 }
