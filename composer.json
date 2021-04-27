@@ -20,7 +20,7 @@
         "ext-mbstring": "*",
         "ext-pcre": "*",
         "ext-phar": "*",
-        "ext-reflectio": "*",
+        "ext-reflection": "*",
         "ext-simplexml": "*",
         "ext-spl": "*",
         "ext-tokenizer": "*",
