@@ -1,0 +1,29 @@
+{
+    "name": "pferreirafabricio/gamenews",
+    "description": "A simple web site for create news topics about games",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fabrício Pinto Ferreira",
+            "email": "pferreirafabricio@gmail.com",
+            "homepage": "https://github.com/pferreirafabricio",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "stable",
+    "config": {
+        "vendor-dir": "vendor"
+    },
+    "autoload": {
+        "psr-4": {
+            "Source\\": "source/",
+            "CoffeeCode\\Router\\": "source/Support/router/src"
+        },
+        "files": [
+            "Source/Boot/Config.php",
+            "Source/Boot/Helpers.php"
+        ]
+    },
+    "require": {}
+}
