@@ -24,8 +24,8 @@
             "CoffeeCode\\Router\\": "source/Support/router/src"
         },
         "files": [
-            "Source/Boot/Config.php",
-            "Source/Boot/Helpers.php"
+            "source/Boot/Config.php",
+            "source/Boot/Helpers.php"
         ]
     },
     "minimum-stability": "stable"
