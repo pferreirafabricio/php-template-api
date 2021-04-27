@@ -11,10 +11,26 @@
             "role": "Developer"
         }
     ],
+    "require": {
+        "php": "^7.4",
+        "ext-dom": "*",
+        "ext-filter": "*",
+        "ext-json": "*",
+        "ext-libxml": "*",
+        "ext-mbstring": "*",
+        "ext-pcre": "*",
+        "ext-phar": "*",
+        "ext-reflectio": "*",
+        "ext-simplexml": "*",
+        "ext-spl": "*",
+        "ext-tokenizer": "*",
+        "ext-xml": "*",
+        "ext-xmlwriter": "*"
+    },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.13",
-        "vimeo/psalm": "^4.7",
-        "phpunit/phpunit": "^9"
+        "phpunit/phpunit": "^9",
+        "vimeo/psalm": "^4.7"
     },
     "config": {
         "vendor-dir": "vendor"
@@ -31,7 +47,7 @@
     },
     "minimum-stability": "stable",
     "scripts": {
-        "psalm": "./vendor/bin/psalm",
-        "post-install-cmd": "composer normalize"
+        "post-install-cmd": "composer normalize",
+        "psalm": "./vendor/bin/psalm"
     }
 }
