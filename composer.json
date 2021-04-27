@@ -1,7 +1,7 @@
 {
     "name": "pferreirafabricio/phptemplateapi",
-    "description": "A simple PHP API structure for use in small project",
     "type": "project",
+    "description": "A simple PHP API structure for use in small project",
     "license": "MIT",
     "authors": [
         {
@@ -11,7 +11,10 @@
             "role": "Developer"
         }
     ],
-    "minimum-stability": "stable",
+    "require-dev": {
+        "ergebnis/composer-normalize": "^2.13",
+        "vimeo/psalm": "^4.7"
+    },
     "config": {
         "vendor-dir": "vendor"
     },
@@ -25,7 +28,5 @@
             "Source/Boot/Helpers.php"
         ]
     },
-    "require-dev": {
-        "vimeo/psalm": "^4.7"
-    }
+    "minimum-stability": "stable"
 }
