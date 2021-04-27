@@ -74,7 +74,7 @@ class Model
     /**
      * Get the fail object
      *
-     * @return PDOException
+     * @return \PDOException
      */
     public function fail(): ?\PDOException
     {
@@ -86,7 +86,7 @@ class Model
      *
      * @param  string $entity
      * @param  array $data
-     * @return int
+     * @return int|null
      */
     public function create(array $data): ?int
     {
@@ -118,7 +118,7 @@ class Model
             /**
              * Return the last insert id into the database
              */
-            return Connect::getInstance()->lastInsertId();
+            return (int) Connect::getInstance()->lastInsertId();
         } catch (\PDOException $exception) {
             $this->fail = $exception;
             return null;

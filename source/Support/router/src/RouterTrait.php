@@ -106,7 +106,7 @@ trait RouterTrait
      */
     private function action($handler): ?string
     {
-        return (!is_string($handler) ?: (explode($this->separator, $handler)[1] ?? null));
+        return (!is_string($handler) ? null : (explode($this->separator, $handler)[1] ?? null));
     }
 
     /**

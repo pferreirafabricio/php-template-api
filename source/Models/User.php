@@ -35,7 +35,7 @@ class User extends Model
      * @param  string $terms
      * @param  string $params
      * @param  string $columns
-     * @return void
+     * @return User|null
      */
     public function find(string $terms, string $params, string $columns = "*"): ?User
     {

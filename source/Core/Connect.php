@@ -18,7 +18,7 @@ class Connect
     /**
      * Get the current stance of the database
      *
-     * @return PDO
+     * @return \PDO
      */
     public static function getInstance(): ?\PDO
     {
