@@ -25,7 +25,8 @@
         "ext-spl": "*",
         "ext-tokenizer": "*",
         "ext-xml": "*",
-        "ext-xmlwriter": "*"
+        "ext-xmlwriter": "*",
+        "vlucas/phpdotenv": "^5.3"
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.13",
