@@ -4,20 +4,20 @@ require_once './vendor/autoload.php';
 require_once './source/Core/Headers.php';
 
 use CoffeeCode\Router\Router;
+use Dotenv\Dotenv;
 
-// $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-// $dotenv->load();
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 /**
  * ROUTE CONFIG
  */
-$router = new Router('http://localhost', '@');
+$router = new Router(env('BASE_URL'), '@');
 
-// phpinfo();
 /**
  * ROUTES
  */
-$router->get('/hello', fn () => 'hellos');
+$router->get('/hello', fn () => json_encode(['enviroment' => 'The default port is: ' . env('BASE_PORT')]));
 
 $router->namespace('Source\Controllers')->group('user');
 $router->get('/', 'UserController@index');

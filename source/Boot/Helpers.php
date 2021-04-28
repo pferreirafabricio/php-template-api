@@ -13,3 +13,13 @@ function response($data, int $httpResponseCode = 200): Response
     return (new Response($data, $httpResponseCode));
 }
 
+/**
+ * Get a value of a given enviroment variable
+ *
+ * @param string $variable
+ * @return string
+ */
+function env(string $variable): string
+{
+    return $_ENV[$variable];
+}
