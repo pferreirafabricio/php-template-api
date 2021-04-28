@@ -32,10 +32,12 @@
     "require-dev": {
         "ergebnis/composer-normalize": "^2.13",
         "phpunit/phpunit": "^9",
-        "vimeo/psalm": "^4.7"
+        "vimeo/psalm": "^4.7",
+        "phpro/grumphp": "^1.3"
     },
     "config": {
-        "vendor-dir": "vendor"
+        "vendor-dir": "vendor",
+        "platform-check": false
     },
     "autoload": {
         "psr-4": {

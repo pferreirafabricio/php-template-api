@@ -1,0 +1,7 @@
+grumphp:
+  # git_hook_variables:
+  #   EXEC_GRUMPHP_COMMAND: 'docker-compose exec app php ./vendor/bin/grumphp git:pre-commit'
+  tasks:
+    phpcs:
+      standard:
+        - "PSR12"

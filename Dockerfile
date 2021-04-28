@@ -6,7 +6,8 @@ ARG uid
 RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libzip-dev \
-    zip
+    zip \
+    git
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
