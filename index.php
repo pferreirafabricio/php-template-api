@@ -5,15 +5,19 @@ require_once './source/Core/Headers.php';
 
 use CoffeeCode\Router\Router;
 
+// $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+// $dotenv->load();
+
 /**
  * ROUTE CONFIG
  */
-$router = new Router(CONF_BASE_URL, '@');
+$router = new Router('http://localhost', '@');
 
+// phpinfo();
 /**
  * ROUTES
  */
-$router->get('/hello', fn () => phpinfo());
+$router->get('/hello', fn () => 'hellos');
 
 $router->namespace('Source\Controllers')->group('user');
 $router->get('/', 'UserController@index');

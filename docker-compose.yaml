@@ -1,22 +1,33 @@
-version: '3.7'
-services: 
+version: "3"
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./:/app
+
   mysql:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
-    restart: always
+    image: mariadb:latest
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: test_db
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_USER: 'tutorial'
+      MYSQL_PASSWORD: 'root'
+      MYSQL_DATABASE: 'test'
     volumes:
       - /data/mysql:/var/lib/mysql
-
-  php-api: 
-    build: .
     ports:
-      - 8000:80
+      - 3307:3306
+
+  php:
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
     volumes:
-      - .:/var/www/html
+      - ./:/app
     depends_on:
       - mysql
+
+volumes:
+  mysqldata: {}
