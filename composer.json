@@ -49,7 +49,6 @@
     },
     "minimum-stability": "stable",
     "scripts": {
-        "post-package-install": "composer normalize",
         "psalm": "./vendor/bin/psalm"
     }
 }
