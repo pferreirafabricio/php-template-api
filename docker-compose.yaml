@@ -1,33 +1,50 @@
-version: "3"
+version: "3.7"
 services:
+  app:
+    build:
+      args:
+        user: fab
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: phpapi
+    container_name: phpapi-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - web
+      - mysql
+    networks:
+      - phpapi
+
   web:
     image: nginx:latest
+    container_name: phpapi-nginx
+    restart: unless-stopped
     ports:
-      - "80:80"
+      - 8000:80
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
-      - ./:/app
+      - ./:/var/www
+      - ./docker-compose/nginx.conf:/etc/nginx/conf.d/nginx.conf
+    networks:
+      - phpapi
 
   mysql:
     image: mariadb:latest
+    container_name: phpapi-db
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: 'root'
-      MYSQL_USER: 'tutorial'
-      MYSQL_PASSWORD: 'root'
-      MYSQL_DATABASE: 'test'
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_USER: "tutorial"
+      MYSQL_PASSWORD: "root"
+      MYSQL_DATABASE: "test"
     volumes:
-      - /data/mysql:/var/lib/mysql
-    ports:
-      - 3307:3306
+      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+    networks:
+      - phpapi
 
-  php:
-    build:
-      context: .
-      dockerfile: PHP.Dockerfile
-    volumes:
-      - ./:/app
-    depends_on:
-      - mysql
-
-volumes:
-  mysqldata: {}
+networks:
+  phpapi:
+    driver: bridge
