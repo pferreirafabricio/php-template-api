@@ -4,20 +4,19 @@ namespace Source\Core;
 
 class Model
 {
-    /** @var object|null Table data */
-    protected $data;
+    protected ?\PDOException $fail;
 
-    /** @var \PDOException|null */
-    protected $fail;
+    /** Table data */
+    protected ?object $data;
 
-    /** @var string Database table */
-    protected static $entity;
+    /** Database table */
+    protected static string $entity;
 
-    /** @var array Variables no update or create */
-    protected static $protected;
+    /** Variables to not update or create */
+    protected static array $protected;
 
-    /** @var array Required fields */
-    protected static $required;
+    /** Required fields */
+    protected static array $required;
 
     /**
      * __construct
@@ -74,7 +73,7 @@ class Model
     /**
      * Get the fail object
      *
-     * @return \PDOException
+     * @return \PDOException|null
      */
     public function fail(): ?\PDOException
     {
@@ -211,7 +210,7 @@ class Model
     }
 
     /**
-     * Remove if a protected attribute is trying to be setted
+     * Remove if a protected attribute is trying to be set
      *
      * @return array|null
      */
