@@ -21,7 +21,7 @@ class Response
         $this->httpResponseCode = $httpResponseCode;
         return $this;
     }
-    
+
     /**
      * Return the given data as JSON
      *

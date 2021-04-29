@@ -14,7 +14,7 @@ class Connect
         \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_OBJ,
         \PDO::ATTR_CASE => \PDO::CASE_NATURAL
     ];
-    
+
     /**
      * Get the current stance of the database
      *
@@ -39,14 +39,14 @@ class Connect
     /**
      * Connect constructor.
      */
-    final private function __construct()
+    private function __construct()
     {
     }
 
     /**
      * Connect clone.
      */
-    final private function __clone()
+    private function __clone()
     {
     }
 }

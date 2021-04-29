@@ -54,6 +54,8 @@
     },
     "minimum-stability": "stable",
     "scripts": {
-        "phpstan": "./vendor/bin/phpstan analyse source"
+        "phpstan": "./vendor/bin/phpstan analyse source",
+        "phpcs": "./vendor/bin/phpcs ./source",
+        "grumphp": "./vendor/bin/grumphp run"
     }
 }

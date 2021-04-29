@@ -19,11 +19,11 @@ class Request
         if (self::isJson($string)) {
             return json_decode($string, true);
         }
-        
+
         parse_str(file_get_contents('php://input'), $data);
         return $data;
     }
-    
+
     /**
      * Verify if a string is a JSON or not
      *

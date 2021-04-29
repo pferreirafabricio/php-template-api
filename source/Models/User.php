@@ -16,7 +16,7 @@ class User extends Model
     {
         parent::__construct("user", ["id"], ["name"]);
     }
-    
+
     /**
      * Bootstrap the User model instance
      *
@@ -28,7 +28,7 @@ class User extends Model
         $this->name = $name;
         return $this;
     }
-    
+
     /**
      * Generic method for find record(s)
      *
@@ -46,7 +46,7 @@ class User extends Model
 
         return $find->fetchObject(__CLASS__);
     }
-    
+
     /**
      * Get all records
      *
@@ -61,7 +61,7 @@ class User extends Model
 
         return $get->fetchAll();
     }
-    
+
     /**
      * Find a user by Id
      *
@@ -73,7 +73,7 @@ class User extends Model
     {
         return $this->find("id = :id", "id={$id}", $columns);
     }
-    
+
     /**
      * Update a record by id
      *
@@ -85,7 +85,7 @@ class User extends Model
     {
         return $this->update($data, "id = :id", "id={$id}");
     }
-    
+
     /**
      * Remove a record by id
      *

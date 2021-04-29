@@ -107,7 +107,10 @@ class Model
              * Prepare the PDO statement using the final query
              * Ex.: INSERT INTO users (id, name) VALUES (:id, :name)
              */
-            $stmt = Connect::getInstance()->prepare("INSERT INTO " . self::$entity . " ({$columns}) VALUES ({$values})");
+            $stmt = Connect::getInstance()
+                ->prepare(
+                    "INSERT INTO " . self::$entity . " ({$columns}) VALUES ({$values})"
+                );
 
             /**
              * Add the values that will be replaced in the text with ':' character
@@ -124,7 +127,7 @@ class Model
             return null;
         }
     }
-    
+
     /**
      * Get a record
      *
@@ -155,7 +158,7 @@ class Model
             return null;
         }
     }
-    
+
     /**
      * Update a record
      *
@@ -185,7 +188,7 @@ class Model
             return null;
         }
     }
-    
+
     /**
      * delete
      *
@@ -221,7 +224,7 @@ class Model
 
         return $safe;
     }
-    
+
     /**
      * Filter the variables
      *
