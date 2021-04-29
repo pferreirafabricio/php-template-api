@@ -4,8 +4,7 @@ namespace Source\Core;
 
 class Connect
 {
-    /** @var \PDO|null */
-    public static $instance;
+    public static ?\PDO $instance;
 
     /** @var array @const array */
     private const OPTIONS = [
@@ -24,12 +23,13 @@ class Connect
     {
         try {
             self::$instance = new \PDO(
-                "mysql:host=" . env('DB_HOST') . ";dbname=" . env('DB_NAME'),
+                "mysql:host=" . env('DB_HOST') . ";port=" . env('DB_PORT') . ";dbname=" . env('DB_NAME'),
                 env('DB_USER'),
                 env('DB_PASSWORD'),
                 self::OPTIONS
             );
         } catch (\PDOException $exception) {
+            echo $exception->getMessage();
             die("<h1>Something was wrong to connect to database</h1>");
         }
 

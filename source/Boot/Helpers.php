@@ -14,7 +14,7 @@ function response($data, int $httpResponseCode = 200): Response
 }
 
 /**
- * Get a value of a given enviroment variable
+ * Get a value of a given environment variable
  *
  * @param string $variable
  * @return string

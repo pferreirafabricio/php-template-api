@@ -17,8 +17,6 @@ $router = new Router(env('BASE_URL'), '@');
 /**
  * ROUTES
  */
-$router->get('/hello', fn () => json_encode(['enviroment' => 'The default port is: ' . env('BASE_PORT')]));
-
 $router->namespace('Source\Controllers')->group('user');
 $router->get('/', 'UserController@index');
 $router->get('/{id}', 'UserController@getById');

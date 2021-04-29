@@ -14,7 +14,7 @@ class User extends Model
      */
     public function __construct()
     {
-        parent::__construct("user", ["id"], ["name"]);
+        parent::__construct("users", ["id"], ["name"]);
     }
 
     /**
@@ -54,7 +54,7 @@ class User extends Model
      */
     public function getAll(): ?array
     {
-        $get = $this->read("SELECT * FROM games");
+        $get = $this->read("SELECT * FROM " . self::$entity);
         if ($this->fail() || !$get->rowCount()) {
             return null;
         }
