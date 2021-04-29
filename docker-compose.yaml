@@ -32,15 +32,19 @@ services:
       - phpapi
 
   mysql:
-    image: mariadb:latest
+    image: mysql:5.7
     container_name: phpapi-db
     restart: unless-stopped
     environment:
+      MYSQL_ROOT_USER: "root"
       MYSQL_ROOT_PASSWORD: "root"
-      MYSQL_USER: "tutorial"
-      MYSQL_PASSWORD: "root"
       MYSQL_DATABASE: "test"
+      # MYSQL_USER: "user"
+      # MYSQL_PASSWORD: "user"
+    ports: 
+      - 3306:3306
     volumes:
+      - /data/mysql:/var/lib/mysql
       - ./docker-compose/mysql:/docker-entrypoint-initdb.d
     networks:
       - phpapi
