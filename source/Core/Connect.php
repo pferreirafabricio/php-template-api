@@ -24,9 +24,9 @@ class Connect
     {
         try {
             self::$instance = new \PDO(
-                "mysql:host=" . CONF_DB_HOST . ";dbname=" . CONF_DB_NAME,
-                CONF_DB_USER,
-                CONF_DB_PASSWORD,
+                "mysql:host=" . env('DB_HOST') . ";dbname=" . env('DB_NAME'),
+                env('DB_USER'),
+                env('DB_PASSWORD'),
                 self::OPTIONS
             );
         } catch (\PDOException $exception) {
