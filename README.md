@@ -18,7 +18,13 @@ This project is a simple PHP API structure for use in quick and small projects w
 - [Docker](https://www.docker.com/)
 
 ## :running_man: Installing and Running  
- `Coming soon...`
+ 1. Clone this repository `git clone https://github.com/pferreirafabricio/php-templateApi.git`;
+ 2. Enter in the project's folder: `cd php-templateApi`
+ 3. Build de app image: `docker-compose build app`
+ 4. Start the containers: `docker-compose up -d`
+ 6. Install project's dependencies: `docker-compose exec app composer install`
+ 7. Init GrumPHP pre-commit: `docker-compose exec app php ./vendor/bin/grumphp git:pre-commit`
+ 8. Finally you can visit [`127.0.0.1:8000/`](http://127.0.0.1:8000/) from your browser 😃
  
 ## :recycle: Contribute
  1. Fork this repository;
