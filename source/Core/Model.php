@@ -2,21 +2,31 @@
 
 namespace Source\Core;
 
-class Model
+abstract class Model
 {
-    protected ?\PDOException $fail;
-
-    /** Table data */
-    protected ?object $data;
-
-    /** Database table */
-    protected static string $entity;
+    /** Table name */
+    protected string $entity;
 
     /** Variables to not update or create */
-    protected static array $protected;
+    protected array $protected;
 
     /** Required fields */
-    protected static array $required;
+    protected array $required;
+
+    /** Table data */
+    protected ?object $data = null;
+
+    protected string $query;
+
+    protected array $conditionsParams = [];
+
+    protected string $order = "";
+
+    protected string $limit = "";
+
+    protected string $offset = "";
+
+    protected ?\PDOException $fail = null;
 
     /**
      * __construct
@@ -28,19 +38,12 @@ class Model
      */
     public function __construct(string $entity, array $protected, array $required)
     {
-        self::$entity = $entity;
-        self::$protected = $protected;
-        self::$required = $required;
+        $this->entity = $entity;
+        $this->protected = array_merge($protected, ['created_at', 'updated_at']);
+        $this->required = $required;
     }
 
-    /**
-     * __set
-     *
-     * @param  mixed $name
-     * @param  mixed $value
-     * @return void
-     */
-    public function __set($name, $value)
+    public function __set(mixed $name, mixed $value): void
     {
         if (empty($this->data)) {
             $this->data = new \stdClass();
@@ -49,21 +52,18 @@ class Model
         $this->data->$name = $value;
     }
 
-    /**
-     * __isset
-     *
-     * @param  mixed $name
-     * @return bool
-     */
-    public function __isset($name): bool
+    public function __isset(mixed $name): bool
     {
         return isset($this->data->$name);
     }
 
+    public function __get(mixed $name): mixed
+    {
+        return ($this->data->$name ?? null);
+    }
+
     /**
      * Return all model's data
-     *
-     * @return object|null
      */
     public function data(): ?object
     {
@@ -72,8 +72,6 @@ class Model
 
     /**
      * Get the fail object
-     *
-     * @return \PDOException|null
      */
     public function fail(): ?\PDOException
     {
@@ -81,45 +79,120 @@ class Model
     }
 
     /**
-     * Create a record
+     * Find a record given the conditions
      *
-     * @param  string $entity
-     * @param  array $data
-     * @return int|null
+     * @param string|null $conditions @example "age = :age"
+     * @param string|null $conditionsParams @example "age=12"
+     * @param string $columns @example "id, name"
+     */
+    public function find(?string $conditions = null, ?string $conditionsParams = null, string $columns = "*"): Model
+    {
+        if ($conditions) {
+            $this->query = "SELECT {$columns} FROM {$this->entity} WHERE {$conditions}";
+            parse_str($conditionsParams, $this->conditionsParams);
+            return $this;
+        }
+
+        $this->query = "SELECT {$columns} FROM {$this->entity}";
+        return $this;
+    }
+
+    /**
+     * Set the order by of the query
+     *
+     * @param string $columnName
+     */
+    public function order(string $columnName): Model
+    {
+        $this->order = " ORDER BY {$columnName}";
+        return $this;
+    }
+
+    /**
+     * Set the offset of the query
+     *
+     * @param integer $offset
+     */
+    public function offset(int $offset): Model
+    {
+        $this->offset = " OFFSET {$offset}";
+        return $this;
+    }
+
+    /**
+     * Limit the number of records
+     *
+     * @param integer $limit
+     */
+    public function limit(int $limit): Model
+    {
+        $this->limit = " LIMIT {$limit}";
+        return $this;
+    }
+
+    /**
+     * Find a record by the id column
+     *
+     * @param integer $id
+     * @param string $columns
+     */
+    public function findById(int $id, string $columns = "*"): mixed
+    {
+        $find = $this->find('id = :id', "id={$id}", $columns);
+        return $find->fetch();
+    }
+
+    /**
+     * Execute the mounted query
+     *
+     * @param boolean $all
+     * @return mixed|null
+     */
+    public function fetch(bool $all = false): mixed
+    {
+        try {
+            $stmt = Connect::getInstance()->prepare($this->mountQuery());
+            $stmt->execute($this->conditionsParams);
+
+            if (!$stmt->rowCount()) {
+                return null;
+            }
+
+            if ($all) {
+                return $stmt->fetchAll(\PDO::FETCH_CLASS, static::class);
+            }
+
+            return $stmt->fetchObject(static::class);
+        } catch (\PDOException $exception) {
+            $this->fail = $exception;
+            return null;
+        }
+    }
+
+    /**
+     * Count the number of records
+     */
+    public function count(): int
+    {
+        $stmt = Connect::getInstance()->prepare($this->mountQuery());
+        $stmt->execute($this->conditionsParams);
+        return $stmt->rowCount();
+    }
+
+    /**
+     * Create a new record
+     *
+     * @param array $data @example ['name' => 'Noa', 'age' => 23]
      */
     public function create(array $data): ?int
     {
         try {
-            /**
-             *  Get the keys of the array and transform in a string.
-             *  Ex.: ['id' => 2, 'name' => 'Master'] turned into id, name
-             */
             $columns = implode(', ', array_keys($data));
-
-            /**
-             * Now we add the binds for the PDO using the character ':'
-             * Ex.: ['id' => 2, 'name' => 'Master'] turned into :id, :name
-             */
             $values = ':' . implode(', :', array_keys($data));
 
-            /**
-             * Prepare the PDO statement using the final query
-             * Ex.: INSERT INTO users (id, name) VALUES (:id, :name)
-             */
-            $stmt = Connect::getInstance()
-                ->prepare(
-                    "INSERT INTO " . self::$entity . " ({$columns}) VALUES ({$values})"
-                );
+            $stmt = Connect::getInstance()->prepare("INSERT INTO {$this->entity} ({$columns}) VALUES ({$values})");
+            $stmt->execute($this->filter($data));
 
-            /**
-             * Add the values that will be replaced in the text with ':' character
-             * Ex.: INSERT ... VALUES (2, 'Master')
-             */
-            $stmt->execute($this->safe($this->filter($data)));
-
-            /**
-             * Return the last insert id into the database
-             */
             return (int) Connect::getInstance()->lastInsertId();
         } catch (\PDOException $exception) {
             $this->fail = $exception;
@@ -128,59 +201,24 @@ class Model
     }
 
     /**
-     * Get a record
+     * Update a record by conditions
      *
-     * @param  string $select
-     * @param  string|null $params
-     * @return \PDOStatement|null
+     * @param array $data @example "['name' => 'Mike']"
+     * @param string $conditions @example "id = :id"
+     * @param string $conditionsParams @example "id=1"
      */
-    public function read(string $select, string $params = null): ?\PDOStatement
-    {
-        try {
-            $stmt = Connect::getInstance()->prepare($select);
-
-            if ($params) {
-                parse_str($params, $paramsList);
-                foreach ($paramsList as $key => $value) {
-                    if ($key == 'limit' || $key == 'offset') {
-                        $stmt->bindValue(":{$key}", $value, \PDO::PARAM_INT);
-                    } else {
-                        $stmt->bindValue(":{$key}", $value, \PDO::PARAM_STR);
-                    }
-                }
-            }
-
-            $stmt->execute();
-            return $stmt;
-        } catch (\Exception $exception) {
-            $this->fail = $exception;
-            return null;
-        }
-    }
-
-    /**
-     * Update a record
-     *
-     * @param  array $data
-     * @param  string $terms
-     * @param  string $params
-     * @return int|null
-     */
-    public function update(array $data, string $terms, string $params): ?int
+    public function update(array $data, string $conditions, string $conditionsParams): ?int
     {
         try {
             $dataSet = [];
-
-            foreach ($this->safe($data) as $bind => $value) {
-                $dataSet[] = "{$bind} = :$bind";
+            foreach ($data as $bind => $value) {
+                $dataSet[] = "{$bind} = :{$bind}";
             }
+            $dataSet = implode(', ', $dataSet);
+            parse_str($conditionsParams, $paramsList);
 
-            $dataSet = implode(", ", $dataSet);
-            parse_str($params, $params);
-
-            $stmt = Connect::getInstance()->prepare("UPDATE " . self::$entity . " SET {$dataSet} WHERE {$terms}");
-            $stmt->execute($this->filter(array_merge($data, $params)));
-
+            $stmt = Connect::getInstance()->prepare("UPDATE {$this->entity} SET {$dataSet} WHERE {$conditions}");
+            $stmt->execute($this->filter(array_merge($data, $paramsList)));
             return ($stmt->rowCount() ?? 1);
         } catch (\PDOException $exception) {
             $this->fail = $exception;
@@ -189,35 +227,50 @@ class Model
     }
 
     /**
-     * delete
+     * Delete a record given a condition
      *
-     * @param  string $terms
-     * @param  string $params
-     * @return int
+     * @param string $conditions @example "name = :name"
+     * @param string|null $conditionsParams @example "name=john"
      */
-    public function delete(string $terms, string $params): ?int
+    public function delete(string $conditions, ?string $conditionsParams): bool
     {
         try {
-            $stmt = Connect::getInstance()->prepare("DELETE FROM " . self::$entity . " WHERE {$terms}");
-            parse_str($params, $params);
-            $stmt->execute($params);
+            $stmt = Connect::getInstance()->prepare("DELETE FROM {$this->entity} WHERE {$conditions}");
 
-            return ($stmt->rowCount() ?? 1);
+            if ($conditionsParams) {
+                parse_str($conditionsParams, $paramsList);
+                $stmt->execute($paramsList);
+                return true;
+            }
+
+            $stmt->execute();
+            return true;
         } catch (\PDOException $exception) {
             $this->fail = $exception;
-            return null;
+            return false;
         }
     }
+
+    /**
+     * Remove a record by id
+     */
+    public function destroy(): bool
+    {
+        if (empty($this->id)) {
+            return false;
+        }
+
+        return $this->delete('id = :id', "id={$this->id}");
+    }
+
 
     /**
      * Remove if a protected attribute is trying to be set
-     *
-     * @return array|null
      */
     public function safe(): ?array
     {
         $safe = (array) $this->data;
-        foreach (static::$protected as $unset) {
+        foreach ($this->protected as $unset) {
             unset($safe[$unset]);
         }
 
@@ -226,9 +279,6 @@ class Model
 
     /**
      * Filter the variables
-     *
-     * @param  array $data
-     * @return array
      */
     public function filter(array $data): ?array
     {
@@ -242,18 +292,24 @@ class Model
 
     /**
      * Verify if all required variables are present
-     *
-     * @return bool
      */
     public function required(): bool
     {
         $required = (array) $this->data;
-        foreach (static::$required as $field) {
+        foreach ($this->required as $field) {
             if (empty($required[$field])) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    /**
+     * Mount the SQL query with all commands
+     */
+    private function mountQuery(): string
+    {
+        return $this->query . $this->order . $this->limit . $this->offset;
     }
 }

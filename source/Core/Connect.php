@@ -16,11 +16,13 @@ class Connect
 
     /**
      * Get the current stance of the database
-     *
-     * @return \PDO
      */
     public static function getInstance(): ?\PDO
     {
+        if (!empty(self::$instance)) {
+            return self::$instance;
+        }
+
         try {
             self::$instance = new \PDO(
                 "mysql:host=" . env('DB_HOST') . ";port=" . env('DB_PORT') . ";dbname=" . env('DB_NAME'),

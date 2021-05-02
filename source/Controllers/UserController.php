@@ -3,7 +3,6 @@
 namespace Source\Controllers;
 
 use Source\Models\User;
-use Source\Support\Response;
 
 class UserController
 {
