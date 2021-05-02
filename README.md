@@ -24,7 +24,7 @@ This project is a simple PHP API structure for use in quick and small projects w
  3. Build de app image: `docker-compose build app`
  4. Start the containers: `docker-compose up -d`
  6. Install project's dependencies: `docker-compose exec app composer install`
- 7. Init GrumPHP pre-commit: `docker-compose exec app php ./vendor/bin/grumphp git:pre-commit`
+ 7. Init GrumPHP pre-commit (optional): `docker-compose exec app php ./vendor/bin/grumphp git:pre-commit`
  8. Finally you can visit [`127.0.0.1:8000/`](http://127.0.0.1:8000/) from your browser 😃
  
 ## :recycle: Contribute
