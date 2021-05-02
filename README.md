@@ -15,6 +15,7 @@ This project is a simple PHP API structure for use in quick and small projects w
 - [PHP](https://www.php.net/)
 - [CoffeCode Router](https://github.com/robsonvleite/router)
 - [MySQL](https://www.mysql.com/)
+- [Nginx](https://www.nginx.com/)
 - [Docker](https://www.docker.com/)
 
 ## :running_man: Installing and Running  
