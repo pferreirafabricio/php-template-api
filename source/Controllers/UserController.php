@@ -15,6 +15,6 @@ class UserController
 
     public function index(): string
     {
-        return response($this->user->getAll())->json();
+        return response($this->user->find()->fetch(true))->json();
     }
 }

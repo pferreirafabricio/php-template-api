@@ -99,8 +99,6 @@ abstract class Model
 
     /**
      * Set the order by of the query
-     *
-     * @param string $columnName
      */
     public function order(string $columnName): Model
     {
@@ -110,8 +108,6 @@ abstract class Model
 
     /**
      * Set the offset of the query
-     *
-     * @param integer $offset
      */
     public function offset(int $offset): Model
     {
