@@ -19,7 +19,7 @@ This project is a simple PHP API structure for use in quick and small projects w
 - [Docker](https://www.docker.com/)
 
 ## :running_man: Installing and Running  
- 1. Clone this repository `git clone https://github.com/pferreirafabricio/php-templateApi.git`;
+ 1. Clone this repository `git clone https://github.com/pferreirafabricio/php-templateApi.git`
  2. Enter in the project's folder: `cd php-templateApi`
  3. Build de app image: `docker-compose build app`
  4. Start the containers: `docker-compose up -d`
