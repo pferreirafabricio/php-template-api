@@ -13,20 +13,7 @@
     ],
     "require": {
         "php": "^8.0",
-        "ext-dom": "*",
-        "ext-filter": "*",
-        "ext-json": "*",
-        "ext-libxml": "*",
-        "ext-mbstring": "*",
-        "ext-pcre": "*",
-        "ext-phar": "*",
-        "ext-reflection": "*",
-        "ext-simplexml": "*",
-        "ext-spl": "*",
-        "ext-tokenizer": "*",
-        "ext-xml": "*",
-        "ext-xmlwriter": "*",
-        "coffeecode/router": "1.0.*",
+        "coffeecode/router": "2.0.*",
         "vlucas/phpdotenv": "^5.3"
     },
     "require-dev": {
@@ -39,12 +26,15 @@
     },
     "config": {
         "vendor-dir": "vendor",
-        "platform-check": false
+        "platform-check": false,
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
+            "phpro/grumphp": true
+        }
     },
     "autoload": {
         "psr-4": {
-            "Source\\": "source/",
-            "CoffeeCode\\Router\\": "source/Support/router/src"
+            "Source\\": "source/"
         },
         "files": [
             "source/Boot/Config.php",

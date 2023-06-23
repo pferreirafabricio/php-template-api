@@ -32,7 +32,7 @@ class Connect
             );
         } catch (\PDOException $exception) {
             echo $exception->getMessage();
-            die("<h1>Something was wrong to connect to database</h1>");
+            die;
         }
 
         return self::$instance;
