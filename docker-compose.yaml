@@ -31,14 +31,14 @@ services:
     networks:
       - phpapi
 
-  mysql:
-    image: mysql:5.7
+  mysql: 
+    image: mysql
     container_name: phpapi-db
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_USER: "root"
-      MYSQL_ROOT_PASSWORD: "root"
-      MYSQL_DATABASE: "test"
+      MYSQL_ROOT_USER: "${DB_USER}"
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: "${DB_NAME}"
       # MYSQL_USER: "user"
       # MYSQL_PASSWORD: "user"
     ports: 
