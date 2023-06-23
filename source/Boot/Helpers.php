@@ -1,6 +1,6 @@
 <?php
 
-use Source\Support\Response;
+use Source\Core\Response;
 
 /**
  * Create a JSON response od the given value

@@ -6,7 +6,6 @@ use Source\Core\Model;
 
 class User extends Model
 {
-
     /**
      * User constructor
      */
